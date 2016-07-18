@@ -1007,7 +1007,7 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       return AttributeList::AT_WorkGroupSizeHint;	 // "work_group_size_hint"
     }
     break;
-  case 21:	 // 6 strings to match.
+  case 21:	 // 7 strings to match.
     switch (Name[0]) {
     default: break;
     case 'a':	 // 1 string to match.
@@ -1039,9 +1039,13 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       if (memcmp(Name.data()+1, "ype_tag_for_datatype", 20))
         break;
       return AttributeList::AT_TypeTagForDatatype;	 // "type_tag_for_datatype"
+    case 'x':	 // 1 string to match.
+      if (memcmp(Name.data()+1, "ray_never_instrument", 20))
+        break;
+      return AttributeList::AT_XRayInstrument;	 // "xray_never_instrument"
     }
     break;
-  case 22:	 // 4 strings to match.
+  case 22:	 // 5 strings to match.
     switch (Name[0]) {
     default: break;
     case 'a':	 // 1 string to match.
@@ -1060,6 +1064,10 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       if (memcmp(Name.data()+1, "ry_acquire_capability", 21))
         break;
       return AttributeList::AT_TryAcquireCapability;	 // "try_acquire_capability"
+    case 'x':	 // 1 string to match.
+      if (memcmp(Name.data()+1, "ray_always_instrument", 21))
+        break;
+      return AttributeList::AT_XRayInstrument;	 // "xray_always_instrument"
     }
     break;
   case 23:	 // 6 strings to match.
@@ -1904,14 +1912,36 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
     if (memcmp(Name.data()+0, "gnu::no_instrument_function", 27))
       break;
     return AttributeList::AT_NoInstrumentFunction;	 // "gnu::no_instrument_function"
-  case 28:	 // 1 string to match.
-    if (memcmp(Name.data()+0, "clang::lto_visibility_public", 28))
+  case 28:	 // 2 strings to match.
+    if (memcmp(Name.data()+0, "clang::", 7))
       break;
-    return AttributeList::AT_LTOVisibilityPublic;	 // "clang::lto_visibility_public"
-  case 29:	 // 1 string to match.
-    if (memcmp(Name.data()+0, "clang::try_acquire_capability", 29))
+    switch (Name[7]) {
+    default: break;
+    case 'l':	 // 1 string to match.
+      if (memcmp(Name.data()+8, "to_visibility_public", 20))
+        break;
+      return AttributeList::AT_LTOVisibilityPublic;	 // "clang::lto_visibility_public"
+    case 'x':	 // 1 string to match.
+      if (memcmp(Name.data()+8, "ray_never_instrument", 20))
+        break;
+      return AttributeList::AT_XRayInstrument;	 // "clang::xray_never_instrument"
+    }
+    break;
+  case 29:	 // 2 strings to match.
+    if (memcmp(Name.data()+0, "clang::", 7))
       break;
-    return AttributeList::AT_TryAcquireCapability;	 // "clang::try_acquire_capability"
+    switch (Name[7]) {
+    default: break;
+    case 't':	 // 1 string to match.
+      if (memcmp(Name.data()+8, "ry_acquire_capability", 21))
+        break;
+      return AttributeList::AT_TryAcquireCapability;	 // "clang::try_acquire_capability"
+    case 'x':	 // 1 string to match.
+      if (memcmp(Name.data()+8, "ray_always_instrument", 21))
+        break;
+      return AttributeList::AT_XRayInstrument;	 // "clang::xray_always_instrument"
+    }
+    break;
   case 31:	 // 2 strings to match.
     switch (Name[0]) {
     default: break;

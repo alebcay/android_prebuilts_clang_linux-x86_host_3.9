@@ -7442,4 +7442,48 @@ public:
   static bool classof(const Attr *A) { return A->getKind() == attr::X86ForceAlignArgPointer; }
 };
 
+class XRayInstrumentAttr : public InheritableAttr {
+public:
+  enum Spelling {
+    GNU_xray_always_instrument = 0,
+    CXX11_clang_xray_always_instrument = 1,
+    GNU_xray_never_instrument = 2,
+    CXX11_clang_xray_never_instrument = 3
+  };
+
+  static XRayInstrumentAttr *CreateImplicit(ASTContext &Ctx, Spelling S, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) XRayInstrumentAttr(Loc, Ctx, S);
+    A->setImplicit(true);
+    return A;
+  }
+
+  XRayInstrumentAttr(SourceRange R, ASTContext &Ctx
+              , unsigned SI
+             )
+    : InheritableAttr(attr::XRayInstrument, R, SI, false, false)
+  {
+  }
+
+  XRayInstrumentAttr *clone(ASTContext &C) const;
+  void printPretty(raw_ostream &OS,
+                   const PrintingPolicy &Policy) const;
+  const char *getSpelling() const;
+  Spelling getSemanticSpelling() const {
+  switch (SpellingListIndex) {
+    default: llvm_unreachable("Unknown spelling list index");
+    case 0: return GNU_xray_always_instrument;
+    case 1: return CXX11_clang_xray_always_instrument;
+    case 2: return GNU_xray_never_instrument;
+    case 3: return CXX11_clang_xray_never_instrument;
+  }
+  }
+  bool alwaysXRayInstrument() const { return SpellingListIndex == 0 ||
+    SpellingListIndex == 1; }
+  bool neverXRayInstrument() const { return SpellingListIndex == 2 ||
+    SpellingListIndex == 3; }
+
+
+  static bool classof(const Attr *A) { return A->getKind() == attr::XRayInstrument; }
+};
+
 #endif // LLVM_CLANG_ATTR_CLASSES_INC

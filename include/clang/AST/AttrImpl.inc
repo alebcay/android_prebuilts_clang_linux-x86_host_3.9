@@ -6988,6 +6988,54 @@ const char *X86ForceAlignArgPointerAttr::getSpelling() const {
   }
 }
 
+XRayInstrumentAttr *XRayInstrumentAttr::clone(ASTContext &C) const {
+  auto *A = new (C) XRayInstrumentAttr(getLocation(), C, getSpellingListIndex());
+  A->Inherited = Inherited;
+  A->IsPackExpansion = IsPackExpansion;
+  A->Implicit = Implicit;
+  return A;
+}
+
+void XRayInstrumentAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    break;
+  case 0 : {
+    OS << " __attribute__((xray_always_instrument))";
+    break;
+  }
+  case 1 : {
+    OS << " [[clang::xray_always_instrument]]";
+    break;
+  }
+  case 2 : {
+    OS << " __attribute__((xray_never_instrument))";
+    break;
+  }
+  case 3 : {
+    OS << " [[clang::xray_never_instrument]]";
+    break;
+  }
+}
+}
+
+const char *XRayInstrumentAttr::getSpelling() const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    return "(No spelling)";
+  case 0:
+    return "xray_always_instrument";
+  case 1:
+    return "xray_always_instrument";
+  case 2:
+    return "xray_never_instrument";
+  case 3:
+    return "xray_never_instrument";
+  }
+}
+
 const char *Attr::getSpelling() const {
   switch (getKind()) {
   case attr::AMDGPUNumSGPR:
@@ -7384,6 +7432,8 @@ const char *Attr::getSpelling() const {
     return cast<WorkGroupSizeHintAttr>(this)->getSpelling();
   case attr::X86ForceAlignArgPointer:
     return cast<X86ForceAlignArgPointerAttr>(this)->getSpelling();
+  case attr::XRayInstrument:
+    return cast<XRayInstrumentAttr>(this)->getSpelling();
   }
   llvm_unreachable("Unexpected attribute kind!");
 }
@@ -7784,6 +7834,8 @@ Attr *Attr::clone(ASTContext &C) const {
     return cast<WorkGroupSizeHintAttr>(this)->clone(C);
   case attr::X86ForceAlignArgPointer:
     return cast<X86ForceAlignArgPointerAttr>(this)->clone(C);
+  case attr::XRayInstrument:
+    return cast<XRayInstrumentAttr>(this)->clone(C);
   }
   llvm_unreachable("Unexpected attribute kind!");
 }
@@ -8184,6 +8236,8 @@ void Attr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
     return cast<WorkGroupSizeHintAttr>(this)->printPretty(OS, Policy);
   case attr::X86ForceAlignArgPointer:
     return cast<X86ForceAlignArgPointerAttr>(this)->printPretty(OS, Policy);
+  case attr::XRayInstrument:
+    return cast<XRayInstrumentAttr>(this)->printPretty(OS, Policy);
   }
   llvm_unreachable("Unexpected attribute kind!");
 }

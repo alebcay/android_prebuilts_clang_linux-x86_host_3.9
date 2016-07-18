@@ -1075,4 +1075,8 @@
   case attr::X86ForceAlignArgPointer: {
     break;
   }
+  case attr::XRayInstrument: {
+    OS << " " << A->getSpelling();
+    break;
+  }
   }

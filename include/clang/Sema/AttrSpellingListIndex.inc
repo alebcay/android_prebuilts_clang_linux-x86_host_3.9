@@ -1336,5 +1336,16 @@
         return 0;
     break;
   }
+  case AT_XRayInstrument: {
+    if (Name == "xray_always_instrument" && SyntaxUsed == 0 && Scope == "")
+        return 0;
+    if (Name == "xray_always_instrument" && SyntaxUsed == 1 && Scope == "clang")
+        return 1;
+    if (Name == "xray_never_instrument" && SyntaxUsed == 0 && Scope == "")
+        return 2;
+    if (Name == "xray_never_instrument" && SyntaxUsed == 1 && Scope == "clang")
+        return 3;
+    break;
+  }
   }
   return 0;

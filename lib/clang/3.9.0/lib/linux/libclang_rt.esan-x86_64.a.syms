@@ -164,6 +164,7 @@
   __interceptor_memchr;
   __interceptor_memcmp;
   __interceptor_memcpy;
+  __interceptor_memmem;
   __interceptor_memmove;
   __interceptor_memrchr;
   __interceptor_memset;
@@ -219,6 +220,7 @@
   __interceptor_pthread_setcancelstate;
   __interceptor_pthread_setcanceltype;
   __interceptor_pthread_setname_np;
+  __interceptor_pthread_sigmask;
   __interceptor_ptrace;
   __interceptor_puts;
   __interceptor_pwrite;
@@ -1188,6 +1190,7 @@
   mbstowcs;
   memchr;
   memcmp;
+  memmem;
   memmove;
   memrchr;
   memset;
@@ -1242,6 +1245,7 @@
   pthread_setcancelstate;
   pthread_setcanceltype;
   pthread_setname_np;
+  pthread_sigmask;
   ptrace;
   puts;
   pwrite;

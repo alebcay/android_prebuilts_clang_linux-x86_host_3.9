@@ -89,5 +89,5 @@ DIAG(warn_missing_submodule, CLASS_WARNING, (unsigned)diag::Severity::Warning, "
 DIAG(warn_module_config_macro_undef, CLASS_WARNING, (unsigned)diag::Severity::Warning, "%select{definition|#undef}0 of configuration macro '%1' has no effect on the import of '%2'; pass '%select{-D%1=...|-U%1}0' on the command line to configure the module", 108, SFINAE_Suppress, false, false, 0)
 DIAG(warn_module_config_mismatch, CLASS_WARNING, (unsigned)diag::Severity::Error, "module file %0 cannot be loaded due to a configuration mismatch with the current compilation", 359, SFINAE_Suppress, false, false, 0)
 DIAG(warn_option_invalid_ocl_version, CLASS_WARNING, (unsigned)diag::Severity::Warning, "OpenCL version %0 does not support the option '%1'", 131, SFINAE_Suppress, false, false, 25)
-DIAG(warn_unknown_diag_option, CLASS_WARNING, (unsigned)diag::Severity::Warning, "unknown %select{warning|remark}0 option '%1'%select{|; did you mean '%3'?}2", 590, SFINAE_Suppress, false, false, 0)
-DIAG(warn_unknown_warning_specifier, CLASS_WARNING, (unsigned)diag::Severity::Warning, "unknown %0 warning specifier: '%1'", 590, SFINAE_Suppress, false, false, 0)
+DIAG(warn_unknown_diag_option, CLASS_WARNING, (unsigned)diag::Severity::Warning, "unknown %select{warning|remark}0 option '%1'%select{|; did you mean '%3'?}2", 591, SFINAE_Suppress, false, false, 0)
+DIAG(warn_unknown_warning_specifier, CLASS_WARNING, (unsigned)diag::Severity::Warning, "unknown %0 warning specifier: '%1'", 591, SFINAE_Suppress, false, false, 0)

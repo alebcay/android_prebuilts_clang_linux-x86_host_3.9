@@ -1529,4 +1529,11 @@ Record.push_back(SA->getVisibility());
     Record.push_back(A->getSpellingListIndex());
     break;
   }
+  case attr::XRayInstrument: {
+    const auto *SA = cast<XRayInstrumentAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.push_back(A->getSpellingListIndex());
+    break;
+  }
   }

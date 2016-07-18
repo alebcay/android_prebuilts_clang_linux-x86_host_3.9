@@ -23,7 +23,7 @@ class ScalarEvolution;
 class Value;
 class Loop;
 class LoadInst;
-}
+} // namespace llvm
 
 namespace polly {
 /// @brief Find the loops referenced from a SCEV expression.
@@ -56,10 +56,10 @@ bool isAffineExpr(const llvm::Region *R, llvm::Loop *Scope,
                   const llvm::SCEV *Expression, llvm::ScalarEvolution &SE,
                   InvariantLoadsSetTy *ILS = nullptr);
 
-/// @brief Check if @p V describes an affine parameter constraint in @p R.
-bool isAffineParamConstraint(llvm::Value *V, const llvm::Region *R,
-                             llvm::Loop *Scope, llvm::ScalarEvolution &SE,
-                             ParameterSetTy &Params, bool OrExpr = false);
+/// @brief Check if @p V describes an affine constraint in @p R.
+bool isAffineConstraint(llvm::Value *V, const llvm::Region *R,
+                        llvm::Loop *Scope, llvm::ScalarEvolution &SE,
+                        ParameterSetTy &Params, bool OrExpr = false);
 
 ParameterSetTy getParamsInAffineExpr(const llvm::Region *R, llvm::Loop *Scope,
                                      const llvm::SCEV *Expression,
@@ -73,6 +73,6 @@ ParameterSetTy getParamsInAffineExpr(const llvm::Region *R, llvm::Loop *Scope,
 /// @returns The constant factor in @p M and the rest of @p M.
 std::pair<const llvm::SCEVConstant *, const llvm::SCEV *>
 extractConstantFactor(const llvm::SCEV *M, llvm::ScalarEvolution &SE);
-}
+} // namespace polly
 
 #endif

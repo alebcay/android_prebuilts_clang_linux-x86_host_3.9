@@ -279,6 +279,10 @@ case AttrSyntax::GNU:
     .Case("weakref", 1)
     .Case("work_group_size_hint", 1)
     .Case("force_align_arg_pointer", (T.getArch() == llvm::Triple::x86) ? 1 : 0)
+    .Case("xray_always_instrument", 1)
+    .Case("xray_never_instrument", 1)
+    .Case("xray_always_instrument", 1)
+    .Case("xray_never_instrument", 1)
     .Default(0);
 case AttrSyntax::Declspec:
   return llvm::StringSwitch<int>(Name)
@@ -372,6 +376,10 @@ if (!Scope || Scope->getName() == "") {
     .Case("try_acquire_shared_capability", LangOpts.CPlusPlus11 ? 1 : 0)
     .Case("type_visibility", LangOpts.CPlusPlus11 ? 1 : 0)
     .Case("warn_unused_result", LangOpts.CPlusPlus11 ? 201603 : 0)
+    .Case("xray_always_instrument", LangOpts.CPlusPlus11 ? 1 : 0)
+    .Case("xray_never_instrument", LangOpts.CPlusPlus11 ? 1 : 0)
+    .Case("xray_always_instrument", LangOpts.CPlusPlus11 ? 1 : 0)
+    .Case("xray_never_instrument", LangOpts.CPlusPlus11 ? 1 : 0)
     .Default(0);
 } else if (Scope->getName() == "gnu") {
   return llvm::StringSwitch<int>(Name)

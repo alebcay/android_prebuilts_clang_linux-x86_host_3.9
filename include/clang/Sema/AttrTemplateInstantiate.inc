@@ -967,6 +967,10 @@ Attr *instantiateTemplateAttribute(const Attr *At, ASTContext &C, Sema &S,
       const auto *A = cast<X86ForceAlignArgPointerAttr>(At);
       return A->clone(C);
     }
+    case attr::XRayInstrument: {
+      const auto *A = cast<XRayInstrumentAttr>(At);
+      return A->clone(C);
+    }
   } // end switch
   llvm_unreachable("Unknown attribute!");
   return nullptr;

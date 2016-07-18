@@ -664,6 +664,16 @@ set_target_properties(PollyISL PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS PollyISL )
 list(APPEND _IMPORT_CHECK_FILES_FOR_PollyISL "${_IMPORT_PREFIX}/lib/libPollyISL.a" )
 
+# Import target "PollyPPCG" for configuration "MinSizeRel"
+set_property(TARGET PollyPPCG APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(PollyPPCG PROPERTIES
+  IMPORTED_LINK_INTERFACE_LANGUAGES_MINSIZEREL "C"
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/lib/libPollyPPCG.a"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS PollyPPCG )
+list(APPEND _IMPORT_CHECK_FILES_FOR_PollyPPCG "${_IMPORT_PREFIX}/lib/libPollyPPCG.a" )
+
 # Import target "Polly" for configuration "MinSizeRel"
 set_property(TARGET Polly APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
 set_target_properties(Polly PROPERTIES

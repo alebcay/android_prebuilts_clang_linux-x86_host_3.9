@@ -483,9 +483,9 @@ static bool checkConsumableSetOnReadAppertainsTo(Sema &S, const AttributeList &A
 }
 
 static bool checkDLLExportAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
-  if (!isa<FunctionDecl>(D) && !isa<VarDecl>(D) && !isa<CXXRecordDecl>(D)) {
+  if (!isa<FunctionDecl>(D) && !isa<VarDecl>(D) && !isa<CXXRecordDecl>(D) && !isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type)
-      << Attr.getName() << (S.getLangOpts().CPlusPlus ? ExpectedFunctionVariableOrClass : ExpectedVariableOrFunction);
+      << Attr.getName() << (S.getLangOpts().CPlusPlus     ? ((S.getLangOpts().ObjC1 || S.getLangOpts().ObjC2)            ? ExpectedFunctionVariableClassOrObjCInterface            : ExpectedFunctionVariableOrClass)     : ((S.getLangOpts().ObjC1 || S.getLangOpts().ObjC2)            ? ExpectedFunctionVariableOrObjCInterface            : ExpectedVariableOrFunction));
     return false;
   }
   return true;
@@ -497,9 +497,9 @@ static bool isTargetx86x86_64armthumbWin32(const TargetInfo &Target) {
 }
 
 static bool checkDLLImportAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
-  if (!isa<FunctionDecl>(D) && !isa<VarDecl>(D) && !isa<CXXRecordDecl>(D)) {
+  if (!isa<FunctionDecl>(D) && !isa<VarDecl>(D) && !isa<CXXRecordDecl>(D) && !isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type)
-      << Attr.getName() << (S.getLangOpts().CPlusPlus ? ExpectedFunctionVariableOrClass : ExpectedVariableOrFunction);
+      << Attr.getName() << (S.getLangOpts().CPlusPlus     ? ((S.getLangOpts().ObjC1 || S.getLangOpts().ObjC2)            ? ExpectedFunctionVariableClassOrObjCInterface            : ExpectedFunctionVariableOrClass)     : ((S.getLangOpts().ObjC1 || S.getLangOpts().ObjC2)            ? ExpectedFunctionVariableOrObjCInterface            : ExpectedVariableOrFunction));
     return false;
   }
   return true;
@@ -1127,9 +1127,9 @@ static bool checkObjCRuntimeVisibleAppertainsTo(Sema &S, const AttributeList &At
 }
 
 static bool checkOpenCLAccessAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
-  if (!isa<ParmVarDecl>(D)) {
+  if (!isa<ParmVarDecl>(D) && !isa<TypedefNameDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type)
-      << Attr.getName() << ExpectedParameter;
+      << Attr.getName() << ExpectedParameterOrTypedef;
     return false;
   }
   return true;
@@ -1668,6 +1668,33 @@ static bool isTargetx86(const TargetInfo &Target) {
   return (T.getArch() == llvm::Triple::x86);
 }
 
+static bool checkXRayInstrumentAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+  if (!isa<CXXMethodDecl>(D) && !isa<ObjCMethodDecl>(D) && !isa<FunctionDecl>(D)) {
+    S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type)
+      << Attr.getName() << ExpectedFunctionOrMethod;
+    return false;
+  }
+  return true;
+}
+
+static unsigned XRayInstrumentAttrSpellingMap(const AttributeList &Attr) {
+  enum Spelling {
+    GNU_xray_always_instrument = 0,
+    CXX11_clang_xray_always_instrument = 1,
+    GNU_xray_never_instrument = 2,
+    CXX11_clang_xray_never_instrument = 3
+  };
+
+  unsigned Idx = Attr.getAttributeSpellingListIndex();
+  switch (Idx) {
+    default: llvm_unreachable("Unknown spelling list index");
+    case 0: return GNU_xray_always_instrument;
+    case 1: return CXX11_clang_xray_always_instrument;
+    case 2: return GNU_xray_never_instrument;
+    case 3: return CXX11_clang_xray_never_instrument;
+  }
+}
+
 static const ParsedAttrInfo AttrInfoMap[AttributeList::UnknownAttribute + 1] = {
   { 1, 0, 0, 0, 0, 0, 0, checkAMDGPUNumSGPRAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling },  // AT_AMDGPUNumSGPR
   { 1, 0, 0, 0, 0, 0, 0, checkAMDGPUNumVGPRAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling },  // AT_AMDGPUNumVGPR
@@ -1873,6 +1900,7 @@ static const ParsedAttrInfo AttrInfoMap[AttributeList::UnknownAttribute + 1] = {
   { 0, 0, 0, 0, 0, 0, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling },  // AT_WeakImport
   { 0, 1, 0, 0, 0, 0, 1, checkWeakRefAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling },  // AT_WeakRef
   { 3, 0, 0, 0, 0, 0, 0, checkWorkGroupSizeHintAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling },  // AT_WorkGroupSizeHint
-  { 0, 0, 0, 1, 0, 0, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, isTargetx86, defaultSpellingIndexToSemanticSpelling }  // AT_X86ForceAlignArgPointer
+  { 0, 0, 0, 1, 0, 0, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, isTargetx86, defaultSpellingIndexToSemanticSpelling },  // AT_X86ForceAlignArgPointer
+  { 0, 0, 0, 0, 0, 0, 0, checkXRayInstrumentAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, XRayInstrumentAttrSpellingMap }  // AT_XRayInstrument
 };
 

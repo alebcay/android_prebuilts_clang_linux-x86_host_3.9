@@ -57369,16 +57369,16 @@ __ai int8_t vqmovunh_s16(int16_t __p0) {
 #endif
 
 #ifdef __LITTLE_ENDIAN__
-__ai int16x8_t vqmovun_high_s32(int16x4_t __p0, int32x4_t __p1) {
-  int16x8_t __ret;
+__ai uint16x8_t vqmovun_high_s32(int16x4_t __p0, int32x4_t __p1) {
+  uint16x8_t __ret;
   __ret = vcombine_u16((uint16x4_t)(__p0), vqmovun_s32(__p1));
   return __ret;
 }
 #else
-__ai int16x8_t vqmovun_high_s32(int16x4_t __p0, int32x4_t __p1) {
+__ai uint16x8_t vqmovun_high_s32(int16x4_t __p0, int32x4_t __p1) {
   int16x4_t __rev0;  __rev0 = __builtin_shufflevector(__p0, __p0, 3, 2, 1, 0);
   int32x4_t __rev1;  __rev1 = __builtin_shufflevector(__p1, __p1, 3, 2, 1, 0);
-  int16x8_t __ret;
+  uint16x8_t __ret;
   __ret = __noswap_vcombine_u16((uint16x4_t)(__rev0), __noswap_vqmovun_s32(__rev1));
   __ret = __builtin_shufflevector(__ret, __ret, 7, 6, 5, 4, 3, 2, 1, 0);
   return __ret;
@@ -57386,16 +57386,16 @@ __ai int16x8_t vqmovun_high_s32(int16x4_t __p0, int32x4_t __p1) {
 #endif
 
 #ifdef __LITTLE_ENDIAN__
-__ai int32x4_t vqmovun_high_s64(int32x2_t __p0, int64x2_t __p1) {
-  int32x4_t __ret;
+__ai uint32x4_t vqmovun_high_s64(int32x2_t __p0, int64x2_t __p1) {
+  uint32x4_t __ret;
   __ret = vcombine_u32((uint32x2_t)(__p0), vqmovun_s64(__p1));
   return __ret;
 }
 #else
-__ai int32x4_t vqmovun_high_s64(int32x2_t __p0, int64x2_t __p1) {
+__ai uint32x4_t vqmovun_high_s64(int32x2_t __p0, int64x2_t __p1) {
   int32x2_t __rev0;  __rev0 = __builtin_shufflevector(__p0, __p0, 1, 0);
   int64x2_t __rev1;  __rev1 = __builtin_shufflevector(__p1, __p1, 1, 0);
-  int32x4_t __ret;
+  uint32x4_t __ret;
   __ret = __noswap_vcombine_u32((uint32x2_t)(__rev0), __noswap_vqmovun_s64(__rev1));
   __ret = __builtin_shufflevector(__ret, __ret, 3, 2, 1, 0);
   return __ret;
@@ -57403,16 +57403,16 @@ __ai int32x4_t vqmovun_high_s64(int32x2_t __p0, int64x2_t __p1) {
 #endif
 
 #ifdef __LITTLE_ENDIAN__
-__ai int8x16_t vqmovun_high_s16(int8x8_t __p0, int16x8_t __p1) {
-  int8x16_t __ret;
+__ai uint8x16_t vqmovun_high_s16(int8x8_t __p0, int16x8_t __p1) {
+  uint8x16_t __ret;
   __ret = vcombine_u8((uint8x8_t)(__p0), vqmovun_s16(__p1));
   return __ret;
 }
 #else
-__ai int8x16_t vqmovun_high_s16(int8x8_t __p0, int16x8_t __p1) {
+__ai uint8x16_t vqmovun_high_s16(int8x8_t __p0, int16x8_t __p1) {
   int8x8_t __rev0;  __rev0 = __builtin_shufflevector(__p0, __p0, 7, 6, 5, 4, 3, 2, 1, 0);
   int16x8_t __rev1;  __rev1 = __builtin_shufflevector(__p1, __p1, 7, 6, 5, 4, 3, 2, 1, 0);
-  int8x16_t __ret;
+  uint8x16_t __ret;
   __ret = __noswap_vcombine_u8((uint8x8_t)(__rev0), __noswap_vqmovun_s16(__rev1));
   __ret = __builtin_shufflevector(__ret, __ret, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
   return __ret;

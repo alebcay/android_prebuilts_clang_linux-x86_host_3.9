@@ -191,6 +191,7 @@
   __interceptor_memchr;
   __interceptor_memcmp;
   __interceptor_memcpy;
+  __interceptor_memmem;
   __interceptor_memmove;
   __interceptor_memrchr;
   __interceptor_memset;
@@ -1317,6 +1318,7 @@
   memalign;
   memchr;
   memcmp;
+  memmem;
   memmove;
   memrchr;
   memset;

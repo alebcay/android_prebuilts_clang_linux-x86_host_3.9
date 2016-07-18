@@ -796,6 +796,10 @@
   bool VisitX86ForceAlignArgPointerAttr(X86ForceAlignArgPointerAttr *A) {
     return true; 
   }
+  bool TraverseXRayInstrumentAttr(XRayInstrumentAttr *A);
+  bool VisitXRayInstrumentAttr(XRayInstrumentAttr *A) {
+    return true; 
+  }
 
 #else // ATTR_VISITOR_DECLS_ONLY
 
@@ -2731,6 +2735,15 @@ bool VISITORCLASS<Derived>::TraverseX86ForceAlignArgPointerAttr(X86ForceAlignArg
 }
 
 template <typename Derived>
+bool VISITORCLASS<Derived>::TraverseXRayInstrumentAttr(XRayInstrumentAttr *A) {
+  if (!getDerived().VisitAttr(A))
+    return false;
+  if (!getDerived().VisitXRayInstrumentAttr(A))
+    return false;
+  return true;
+}
+
+template <typename Derived>
 bool VISITORCLASS<Derived>::TraverseAttr(Attr *A) {
   if (!A)
     return true;
@@ -3130,6 +3143,8 @@ bool VISITORCLASS<Derived>::TraverseAttr(Attr *A) {
       return getDerived().TraverseWorkGroupSizeHintAttr(cast<WorkGroupSizeHintAttr>(A));
     case attr::X86ForceAlignArgPointer:
       return getDerived().TraverseX86ForceAlignArgPointerAttr(cast<X86ForceAlignArgPointerAttr>(A));
+    case attr::XRayInstrument:
+      return getDerived().TraverseXRayInstrumentAttr(cast<XRayInstrumentAttr>(A));
   }
   llvm_unreachable("bad attribute kind");
 }
